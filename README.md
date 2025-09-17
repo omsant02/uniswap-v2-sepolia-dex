@@ -1,69 +1,52 @@
-# React + TypeScript + Vite
+# 🦄 Minimal Uniswap v2 Swap DApp (Sepolia)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React + wagmi frontend for swapping tokens on **Uniswap v2** using the Sepolia testnet.  
+Supports ETH ↔ ERC20 and ERC20 ↔ ERC20 swaps (via direct pairs or WETH routing).  
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 What’s Inside
+- React + Vite + TypeScript
+- wagmi + viem for Ethereum interactions
+- Uniswap v2 Router, Factory, and Pair contracts
+- Works on Sepolia (default token = USDC testnet)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📚 Background
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Uniswap v1
+- **Contracts**:
+  - `Factory` → deploys token-specific Exchanges.
+  - `Exchange` template → one per ERC20 (all swaps were ETH ↔ ERC20).
+- **Limitations**:
+  - No ERC20 ↔ ERC20 directly (you had to swap via ETH).
+  - No routing, no TWAP oracle, no flash swaps.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Uniswap v2
+- **Contracts**:
+  - `Factory` → deploys `Pair` contracts.
+  - `Pair` → pool holding *any two ERC20s* (constant product AMM).
+  - `Router` → user-facing helper that:
+    - Wraps/unwraps ETH ↔ WETH
+    - Routes multi-hop swaps (e.g. TokenA → WETH → TokenB)
+- **Improvements**:
+  - Any ERC20 ↔ ERC20 pairs
+  - Built-in TWAP oracle support
+  - Flash swaps
+  - Cleaner UX via Router
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚙️ Setup
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# clone repo
+git clone https://github.com/yourname/uniswap-v2-swap.git
+cd uniswap-v2-swap
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+# install deps
+npm install
+
+# run dev server
+npm run dev
