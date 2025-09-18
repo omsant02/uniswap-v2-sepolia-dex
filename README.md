@@ -126,8 +126,8 @@ Pair sends output tokens to user
 
 ```bash
 # clone repo
-git clone https://github.com/yourname/uniswap-v2-swap.git
-cd uniswap-v2-swap
+git clone https://github.com/omsant02/uniswap-v2-sepolia-dex
+cd uniswap-v2-sepolia-dex
 
 # install deps
 npm install
